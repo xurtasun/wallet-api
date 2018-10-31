@@ -1,11 +1,11 @@
-const express       = require('express')
+var   express       = require('express')
       logger        = require('morgan')
       path          = require('path')
       cookieParser  = require('cookie-parser')
       bodyParser    = require('body-parser')
       mongoose      = require('mongoose')
-      passport      = require('passport')
-      require('mongoose-middleware').initialize(mongoose);
+      passport      = require('passport');
+require('mongoose-middleware').initialize(mongoose);
 
 //getting DB endpoint from env
 var mongoDB = process.env.DB_HOST

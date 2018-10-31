@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  mongodb: # name of the service
+    image: mvertes/alpine-mongo # specify image to build container from
+    volumes:
+      - /data/db/:/data/db
+    ports:
+      - "27017:27017"
+  wallet_api: #name of your service
+    restart: always
+    image: xurtasun/node_wallet
+    ports:
+      - "443:3000" #specify ports forwarding
+    environment:
+      - DB_HOST=mongodb
+      - PORT=3000
+    depends_on:
+      - mongodb
