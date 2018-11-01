@@ -12,7 +12,6 @@ module.exports = function(app) {
     
     // login function [email & passwd] required
     login = function(req, res) {
-        console.log(req.body);
         User.findOne({
                 'email' : req.body.email
             },
@@ -118,9 +117,7 @@ module.exports = function(app) {
     }
     // Get own balance, similar to getUser
     getBalance = function(req, res) {
-        console.log('HERE');
         var userid = req.params.user_id || req.userId;
-        console.log(userid);
         User.findOne({
             _id: userid
         }, {

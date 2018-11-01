@@ -81,7 +81,7 @@ if __name__ == '__main__':
     email = input('{}Enter your email: {}'.format(ANSII['bold'],ANSII['end']))
     passwd = input('{}Enter your password: {}'.format(ANSII['bold'],ANSII['end']))
     ip = get_IP()
-    vrs = TransactionWallet( path = 'http://{}:3001'.format(ip), ##Default API - endPoint
+    vrs = TransactionWallet( path = 'http://{}:443'.format(ip), ##Default API - endPoint
                              email = email,
                              passwd = passwd,
                             )
