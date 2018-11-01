@@ -25,12 +25,12 @@ docker stack rm wallet
 ```
 ### API information
 API restfull is now available:
- - /users                   (auth required)
+ - /users                   (AUTH required)
  - /login                   (email && passwd required)
  - /signup                  (email, passwd, name, username required)
- - /user                    (auth required)
- - /user/balance            (auth required)
- - /sendmoney/:idReceiver   (auth required, id receiver, money to transfer)
+ - /user/{user_id}          (AUTH required)
+ - /user/balance/{user_id}  (AUTH required)
+ - /sendmoney/{idReceiver}  (AUTH required, id receiver, money to transfer)
 
 ### Test endPoints
 Requirements
