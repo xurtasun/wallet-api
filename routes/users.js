@@ -12,7 +12,7 @@ module.exports = function(app) {
     
     // login function [email & passwd] required
     login = function(req, res) {
-        console.log(req.body.email);
+        console.log(req.body);
         User.findOne({
                 'email' : req.body.email
             },
@@ -44,6 +44,7 @@ module.exports = function(app) {
                 // Generating auth token
                 var token = newToken(user);
                 res.status(200).json({
+                    id      : user._id,
                     message : 'Authenticated',
                     token   : token
                 });
@@ -75,6 +76,7 @@ module.exports = function(app) {
                 else{
                     var token = newToken(user);
                     res.status(200).send({
+                        id      : user._id,
                         message : 'Registered & Authenticated',
                         token   : token,
                     });
@@ -89,10 +91,11 @@ module.exports = function(app) {
                  expiresIn: 86400 // expires in 24 hours
                });
     }
-    // Get User, not really necessary
+    // Get User by _id or default owner request
     getUser = function(req, res) {
+        var userid = req.params.user_id || req.userId;
         User.findOne({
-            "_id": req.userId
+            "_id": userid
         }, {
             passwd: 0
         }, function(err, user) {
@@ -115,8 +118,11 @@ module.exports = function(app) {
     }
     // Get own balance, similar to getUser
     getBalance = function(req, res) {
+        console.log('HERE');
+        var userid = req.params.user_id || req.userId;
+        console.log(userid);
         User.findOne({
-            "_id": req.userId
+            _id: userid
         }, {
             balance  : 1,
             currency : 1
@@ -212,8 +218,8 @@ module.exports = function(app) {
     app.post('/signup', signup);
     // getting info
     app.get('/users/',verifyToken,getUsers); // All users
-    app.get('/user/',verifyToken, getUser);  // Own user
-    app.get('/user/balance',verifyToken, getBalance); //Own balance
+    app.get('/user/detail/:user_id',verifyToken, getUser);  // Own user
+    app.get('/user/balance/:user_id',verifyToken, getBalance); //Own balance
     
     app.post('/send/:receiver_id',verifyToken,verifySaldo,sendMoney); // Sending money
     

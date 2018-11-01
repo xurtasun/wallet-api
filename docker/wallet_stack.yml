@@ -7,8 +7,7 @@ services:
     ports:
       - "27017:27017"
   wallet_api: #name of your service
-    restart: always
-    image: xurtasun/node_wallet
+    image: xurtasun/node_wallet:latest
     ports:
       - "443:3000" #specify ports forwarding
     environment:

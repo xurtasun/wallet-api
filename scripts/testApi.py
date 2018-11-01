@@ -36,6 +36,7 @@ class TransactionWallet(object):
             'userName'   : self.userName
         }
         r = self.session.post('{}/signup'.format(self.path),json=user).json() ## POST / SIGN UP
+        self.userId = r['id']
         print('{}{}{}'.format(ANSII['green'],r['message'],ANSII['end']))
         self.session.headers.update({'verse-access-token' : r['token']}) ## SAVING TOKEN on HEADERs
     def login(self): ## Login request
@@ -44,11 +45,13 @@ class TransactionWallet(object):
             'passwd': self.passwd
         }
         r = self.session.post('{}/login'.format(self.path),json=user).json() ## POST / LOGIN
+        if r.get('id'):
+            self.userId = r['id']
         print('{}{}{}'.format(ANSII['green'],r['message'],ANSII['end']))
         self.session.headers.update({'verse-access-token' : r['token']}) ## SAVING TOKEN on HEADERs
         return r['token']
     def getBalance(self):
-        r = self.session.get('{}/user/balance'.format(self.path)).json() ## GET / BALANCE
+        r = self.session.get('{}/user/balance/{}'.format(self.path,self.userId)).json() ## GET / BALANCE
         self.currency = r['currency']
         self.balance  = r['balance']
         print('Your current Balance is: {} {} {} {}'.format(ANSII['blue'],r['balance'],r['currency'],ANSII['end']))
@@ -78,7 +81,7 @@ if __name__ == '__main__':
     email = input('{}Enter your email: {}'.format(ANSII['bold'],ANSII['end']))
     passwd = input('{}Enter your password: {}'.format(ANSII['bold'],ANSII['end']))
     ip = get_IP()
-    vrs = TransactionWallet( path = 'http://{}:443'.format(ip), ##Default API - endPoint
+    vrs = TransactionWallet( path = 'http://{}:3001'.format(ip), ##Default API - endPoint
                              email = email,
                              passwd = passwd,
                             )
