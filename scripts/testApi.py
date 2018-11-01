@@ -11,6 +11,7 @@ ANSII = { 'bold': '\033[1m'
 def get_IP(): 
     host_name = socket.gethostname() 
     return socket.gethostbyname(host_name) 
+
 class TransactionWallet(object):
     def __init__(self,path = None, email = None, passwd = None, first_name = None, last_name = None, userName = None):
         self.path, self.email, self.passwd, self.first_name, self.last_name, self.userName = path, email, passwd, first_name, last_name, userName
@@ -23,6 +24,7 @@ class TransactionWallet(object):
         self.sendMoney()  ## Sending money to one User (Using ID to make it easier and faster to develop)
         self.getBalance() 
         self.getUsers()
+        
     def signUp(self): ## SignUp request
         print('{} Your email is not registered, we need some information to Sign you Up. {}'.format(ANSII['lightred'],ANSII['end']))
         self.userName   = input('{}Enter your Username: {}  '.format(ANSII['bold'],ANSII['end']))
@@ -39,6 +41,7 @@ class TransactionWallet(object):
         self.userId = r['id']
         print('{}{}{}'.format(ANSII['green'],r['message'],ANSII['end']))
         self.session.headers.update({'verse-access-token' : r['token']}) ## SAVING TOKEN on HEADERs
+        
     def login(self): ## Login request
         user = {
             'email' : self.email,
@@ -50,11 +53,13 @@ class TransactionWallet(object):
         print('{}{}{}'.format(ANSII['green'],r['message'],ANSII['end']))
         self.session.headers.update({'verse-access-token' : r['token']}) ## SAVING TOKEN on HEADERs
         return r['token']
+
     def getBalance(self):
         r = self.session.get('{}/user/balance/{}'.format(self.path,self.userId)).json() ## GET / BALANCE
         self.currency = r['currency']
         self.balance  = r['balance']
         print('Your current Balance is: {} {} {} {}'.format(ANSII['blue'],r['balance'],r['currency'],ANSII['end']))
+        
     def sendMoney(self):
         ## ASKING FOR MONEY RECEIVER AND QUANTITY
         identifier = input('{}Email whose gonna receive your money: {}'.format(ANSII['bold'],ANSII['end']))
@@ -78,11 +83,11 @@ class TransactionWallet(object):
 if __name__ == '__main__':
 
     print('{}Welcome to your Personal Wallet. {}'.format(ANSII['lightblue'],ANSII['end']))
-    email = input('{}Enter your email: {}'.format(ANSII['bold'],ANSII['end']))
+    email  = input('{}Enter your email: {}'.format(ANSII['bold'],ANSII['end']))
     passwd = input('{}Enter your password: {}'.format(ANSII['bold'],ANSII['end']))
-    ip = get_IP()
-    vrs = TransactionWallet( path = 'http://{}:443'.format(ip), ##Default API - endPoint
-                             email = email,
-                             passwd = passwd,
-                            )
+    ip     = get_IP()
+    vrs    = TransactionWallet( path = 'http://{}:443'.format(ip), ##Default API - endPoint
+                                 email = email,
+                                 passwd = passwd,
+                               )
 
